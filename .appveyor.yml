@@ -32,7 +32,7 @@ build_script:
 - cd Build
 - cd %BUILD_TYPE%
 - set PATH
-- cmake -G "MinGW Makefiles" -DCMAKE_C_COMPILER="C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\bin\gcc" -DCMAKE_CXX_COMPILER="C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\bin\g++" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ../../
+- cmake -G "MinGW Makefiles" -DCMAKE_C_COMPILER="C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/bin/gcc" -DCMAKE_CXX_COMPILER="C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/bin/g++" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ../../
 - mingw32-make
 - mingw32-make install
 
