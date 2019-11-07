@@ -1,40 +1,67 @@
-version: '{build}'
+image:
+  - Visual Studio 2015
+version: "{build}"
+clone_depth: 1
 
-# Uncomment this to enable the fast build environment if your account does not
-# support it automatically:
-os: Visual Studio 2015 RC
+# scripts that are called at very beginning, before repo cloning
+init:
+- git config --global core.longpaths true
+- git config --global core.autocrlf input
 
-environment:
-  global:
-    PLATFORMTOOLSET: "v140"
+branches:
+  only:
+     - master
 
-  matrix:
-    - BUILD_TYPE: Release
-      COMPILER: MinGW-w64
-      PLATFORM: x64
-    - BUILD_TYPE: Debug
-      COMPILER: MinGW-w64
-      PLATFORM: x64
+
 
 install:
-# Rename sh.exe as sh.exe in PATH interferes with MinGW
-- rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
-- set PATH=C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\bin;%PATH%
-# Download MinGW-w64 toolchain
-# - if [%COMPILER%]==[MinGW-w64] call bin\appveyor-download.cmd "https://raw.githubusercontent.com/symengine/dependencies/57834d6007065cdd71964c96b397505b2b4ce78a/x86_64-4.8.5-release-win32-seh-rt_v4-rev0.7z" -FileName mw64.7z
-# - if [%COMPILER%]==[MinGW-w64] 7z x -oC:\ mw64.7z > NUL
-# - if [%COMPILER%]==[MinGW-w64] set PATH=C:\mingw64\bin;%PATH%
-# Download pre-compiled gmp binaries
-# - if [%COMPILER%]==[MinGW-w64] call bin\appveyor-download.cmd "https://raw.githubusercontent.com/symengine/dependencies/57834d6007065cdd71964c96b397505b2b4ce78a/gmp-6.0.0-x86_64-w64-mingw32.7z" -FileName gmp.7z
-# - if [%COMPILER%]==[MinGW-w64] 7z x -oC:\mingw64 gmp.7z > NUL
+
+- cmd: SET PATH=C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin\;%PATH%
+- rename "C:\Program Files\Git\usr\bin\sh.exe" "sh-ignored.exe"
+
+# build_script:
+# - cmake -G "MinGW Makefiles"  .
+# - mingw32-make.exe VERBOSE=1 java-all # python-bindings # Only the Java and Python parts
+# - ctest --output-on-failure -R java
+# Don't test python, as pybind11 seems too complex for mingw for now (mingw-w64/x86_64-7.2.0-posix-seh-rt_v5-rev1)
+# The observed failure is around the ForcefulKill exception, that seems badly caught somehow.
+# - ctest --output-on-failure -R python
+
+
+
+
+
+
+
+
+#   matrix:
+#     - BUILD_TYPE: Release
+#       COMPILER: MinGW-w64
+#       PLATFORM: x64
+#     - BUILD_TYPE: Debug
+#       COMPILER: MinGW-w64
+#       PLATFORM: x64
+
+# install:
+# # Rename sh.exe as sh.exe in PATH interferes with MinGW
+# - rename "C:\Program Files\Git\usr\bin\sh.exe" "sh2.exe"
+# - set PATH=C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\bin;%PATH%
+# # Download MinGW-w64 toolchain
+# # - if [%COMPILER%]==[MinGW-w64] call bin\appveyor-download.cmd "https://raw.githubusercontent.com/symengine/dependencies/57834d6007065cdd71964c96b397505b2b4ce78a/x86_64-4.8.5-release-win32-seh-rt_v4-rev0.7z" -FileName mw64.7z
+# # - if [%COMPILER%]==[MinGW-w64] 7z x -oC:\ mw64.7z > NUL
+# # - if [%COMPILER%]==[MinGW-w64] set PATH=C:\mingw64\bin;%PATH%
+# # Download pre-compiled gmp binaries
+# # - if [%COMPILER%]==[MinGW-w64] call bin\appveyor-download.cmd "https://raw.githubusercontent.com/symengine/dependencies/57834d6007065cdd71964c96b397505b2b4ce78a/gmp-6.0.0-x86_64-w64-mingw32.7z" -FileName gmp.7z
+# # - if [%COMPILER%]==[MinGW-w64] 7z x -oC:\mingw64 gmp.7z > NUL
 
 build_script:
 - cd Build
 - cd %BUILD_TYPE%
 - set PATH
-- cmake -G "MinGW Makefiles" -DCMAKE_C_COMPILER="C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/bin/gcc" -DCMAKE_CXX_COMPILER="C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/bin/g++" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ../../
+- cmake -G "MinGW Makefiles"  ../../
+# -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ../../
 - mingw32-make
-- mingw32-make install
+# - mingw32-make install
 
 test_script:
 - cd ../../
