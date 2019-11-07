@@ -14,14 +14,19 @@
 - GCC 4.9 или выше;
 - Make
 - QtCreator и Qt5 (по желанию).
+
 ### Mac
 - Git 2.23.0 или выше
 - CMake 3.2 или выше;
 - Apple LLVM version 10.0.0 (clang-1000.11.45.5) или выше;
 - Make
 - QtCreator и Qt5 (по желанию).
+
 ### Windows
-- В процессе
+- Git 2.23.0 или выше
+- CMake 3.2 или выше;
+- MinGW-w64 5.0.3 или выше (должен быть добавлен в переменную среды Path);
+- QtCreator и Qt5 (по желанию).
 
 ## Начало работы
 Cоздайте ответвление (fork) этого репозитория в свой GitHub аккаунт. Загрузите содержимое полученного репозитория, либо клонируйте его в нужную вам директорию.
@@ -99,7 +104,36 @@ cd ../../Bin/{Debug|Release}/
 ![cmake_run](./Images/cmake1.png)
 
 ### Windows
-- В процессе
+Release сборка:
+```cmd
+cd PathPlanningProject
+cd Build
+cd Release
+set PATH
+cmake ../../ -DCMAKE_BUILD_TYPE="Release" -G "MinGW Makefiles"
+mingw32-make
+mingw32-make install
+```
+
+Debug сборка:
+```cmd
+cd PathPlanningProject
+cd Build
+cd Debug
+set PATH
+cmake ../../ -DCMAKE_BUILD_TYPE="Debug" -G "MinGW Makefiles"
+mingw32-make
+mingw32-make install
+```
+
+Запуск:
+```cmd
+cd ../../Bin/{Debug|Release}/
+PathPlanning.exe ../../Examples/example.xml
+```
+
+Результат запуска:
+![cmake_run2](./Images/cmake.png)
 
 ## Тестирование 
 [![Build Status](https://travis-ci.com/haiot4105/PathPlanningProject.svg?branch=master)](https://travis-ci.com/haiot4105/PathPlanningProject)
@@ -107,9 +141,13 @@ cd ../../Bin/{Debug|Release}/
 При использовании сборки CMake возможен запуск тестов, как локально, так и с использованием Travis CI и AppVeyor. 
 Локальный запуск тестов производится из директории `.../PathPlanningProject/Build/{Debug|Release}/` с помощью команды:
 ```
- ctest --output-on-failure
+ ctest
 ```
 
+либо (для более подробного вывода):
+```
+ ctest --output-on-failure
+```
 При попытке запуска тестов c использованием пустого шаблона должен получиться следующий результат:
 ```
       Start  1: Test1
