@@ -56,7 +56,7 @@ install:
 
 build_script:
 - cd Build
-- cd %BUILD_TYPE%
+- cd Release
 - set PATH
 - cmake -G "MinGW Makefiles"  ../../
 # -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ../../
