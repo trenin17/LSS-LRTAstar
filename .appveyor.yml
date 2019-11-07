@@ -31,6 +31,7 @@ install:
 build_script:
 - cd Build
 - cd %BUILD_TYPE%
+- set PATH
 - cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ../../
 - mingw32-make
 - mingw32-make install
