@@ -15,14 +15,14 @@ branches:
 install:
 - cmd: SET PATH=C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin\;%PATH%
 - rename "C:\Program Files\Git\usr\bin\sh.exe" "sh-ignored.exe"
-
-matrix:
-  - BUILD_TYPE: Release
-    COMPILER: MinGW-w64
-    PLATFORM: x64
-  - BUILD_TYPE: Debug
-    COMPILER: MinGW-w64
-    PLATFORM: x64
+environment:
+  matrix:
+    - BUILD_TYPE: Release
+      COMPILER: MinGW-w64
+      PLATFORM: x64
+    - BUILD_TYPE: Debug
+      COMPILER: MinGW-w64
+      PLATFORM: x64
 
 build_script:
 - cd Build
