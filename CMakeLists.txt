@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.2)
-project(PathPlanning)
+set(PROJECT_NAME "YourFirstName_YourLastName_ASearch")
+project(${PROJECT_NAME})
 
 
 if (${MINGW})
