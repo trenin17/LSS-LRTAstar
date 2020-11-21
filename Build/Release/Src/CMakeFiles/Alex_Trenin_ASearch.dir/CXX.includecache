@@ -6,29 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/config.cpp
-config.h
-/Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/config.h
-gl_const.h
-/Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/gl_const.h
-tinyxml2.h
-/Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/tinyxml2.h
-iostream
--
-sstream
--
-algorithm
--
-math.h
--
-
 /Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/config.h
 string
 -
-
-/Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/environmentoptions.cpp
-environmentoptions.h
-/Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/environmentoptions.h
 
 /Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/environmentoptions.h
 gl_const.h
@@ -49,10 +29,6 @@ list
 /Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/main.cpp
 mission.h
 /Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/mission.h
-
-/Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/map.cpp
-map.h
-/Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/map.h
 
 /Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/map.h
 iostream
@@ -117,26 +93,14 @@ limits
 -
 chrono
 -
+set
+-
 
 /Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/searchresult.h
 list
 -
 node.h
 /Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/node.h
-
-/Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/tinyxml2.cpp
-tinyxml2.h
-/Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/tinyxml2.h
-new
--
-stddef.h
--
-stdarg.h
--
-cstddef
--
-cstdarg
--
 
 /Users/alextrenin/Documents/GitHub/PathPlanningProject/Src/tinyxml2.h
 ctype.h

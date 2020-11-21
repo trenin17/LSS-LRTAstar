@@ -1,0 +1,271 @@
+Start testing: Nov 21 22:21 +05
+----------------------------------------------------------
+1/12 Testing: Test1
+1/12 Test: Test1
+Command: "/Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/0_test.xml"
+Directory: /Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests
+"Test1" start time: Nov 21 22:21 +05
+Output:
+----------------------------------------------------------
+tiny
+Warning! Value of 'logpath' tag is missing!
+Value of 'logpath' tag was defined to 'current directory'.
+Warning! Value of 'logfilename' tag is missing.
+Value of 'logfilename' tag was defined to default (original filename +'_log' + original file extension.
+Incorrect path legth
+<end of output>
+Test time =   5.92 sec
+----------------------------------------------------------
+Test Failed.
+"Test1" end time: Nov 21 22:21 +05
+"Test1" time elapsed: 00:00:05
+----------------------------------------------------------
+
+2/12 Testing: Test2
+2/12 Test: Test2
+Command: "/Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/1_test.xml"
+Directory: /Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests
+"Test2" start time: Nov 21 22:21 +05
+Output:
+----------------------------------------------------------
+tiny
+Warning! Value of 'logpath' tag is missing!
+Value of 'logpath' tag was defined to 'current directory'.
+Warning! Value of 'logfilename' tag is missing.
+Value of 'logfilename' tag was defined to default (original filename +'_log' + original file extension.
+Incorrect path legth
+<end of output>
+Test time =   5.56 sec
+----------------------------------------------------------
+Test Failed.
+"Test2" end time: Nov 21 22:21 +05
+"Test2" time elapsed: 00:00:05
+----------------------------------------------------------
+
+3/12 Testing: Test3
+3/12 Test: Test3
+Command: "/Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/2_test.xml"
+Directory: /Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests
+"Test3" start time: Nov 21 22:21 +05
+Output:
+----------------------------------------------------------
+Warning! Value of'metrictype' is not correctly specified.
+Value of 'metrictype' was defined to 'euclidean'
+tiny
+Warning! Value of 'logpath' tag is missing!
+Value of 'logpath' tag was defined to 'current directory'.
+Warning! Value of 'logfilename' tag is missing.
+Value of 'logfilename' tag was defined to default (original filename +'_log' + original file extension.
+Incorrect path legth
+<end of output>
+Test time =   5.85 sec
+----------------------------------------------------------
+Test Failed.
+"Test3" end time: Nov 21 22:21 +05
+"Test3" time elapsed: 00:00:05
+----------------------------------------------------------
+
+4/12 Testing: Test4
+4/12 Test: Test4
+Command: "/Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/3_test.xml"
+Directory: /Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests
+"Test4" start time: Nov 21 22:21 +05
+Output:
+----------------------------------------------------------
+Warning! Value of'metrictype' is not correctly specified.
+Value of 'metrictype' was defined to 'euclidean'
+tiny
+Warning! Value of 'logpath' tag is missing!
+Value of 'logpath' tag was defined to 'current directory'.
+Warning! Value of 'logfilename' tag is missing.
+Value of 'logfilename' tag was defined to default (original filename +'_log' + original file extension.
+Incorrect path legth
+<end of output>
+Test time =   5.76 sec
+----------------------------------------------------------
+Test Failed.
+"Test4" end time: Nov 21 22:21 +05
+"Test4" time elapsed: 00:00:05
+----------------------------------------------------------
+
+5/12 Testing: Test5
+5/12 Test: Test5
+Command: "/Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/4_test.xml"
+Directory: /Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests
+"Test5" start time: Nov 21 22:21 +05
+Output:
+----------------------------------------------------------
+Warning! Value of'metrictype' is not correctly specified.
+Value of 'metrictype' was defined to 'euclidean'
+tiny
+Warning! Value of 'logpath' tag is missing!
+Value of 'logpath' tag was defined to 'current directory'.
+Warning! Value of 'logfilename' tag is missing.
+Value of 'logfilename' tag was defined to default (original filename +'_log' + original file extension.
+Incorrect path legth
+<end of output>
+Test time =   5.59 sec
+----------------------------------------------------------
+Test Failed.
+"Test5" end time: Nov 21 22:21 +05
+"Test5" time elapsed: 00:00:05
+----------------------------------------------------------
+
+6/12 Testing: Test6
+6/12 Test: Test6
+Command: "/Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/5_test.xml"
+Directory: /Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests
+"Test6" start time: Nov 21 22:21 +05
+Output:
+----------------------------------------------------------
+Warning! Value of'metrictype' is not correctly specified.
+Value of 'metrictype' was defined to 'euclidean'
+tiny
+Warning! Value of 'logpath' tag is missing!
+Value of 'logpath' tag was defined to 'current directory'.
+Warning! Value of 'logfilename' tag is missing.
+Value of 'logfilename' tag was defined to default (original filename +'_log' + original file extension.
+Incorrect path legth
+<end of output>
+Test time =   5.67 sec
+----------------------------------------------------------
+Test Failed.
+"Test6" end time: Nov 21 22:21 +05
+"Test6" time elapsed: 00:00:05
+----------------------------------------------------------
+
+7/12 Testing: Test7
+7/12 Test: Test7
+Command: "/Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/6_test.xml"
+Directory: /Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests
+"Test7" start time: Nov 21 22:21 +05
+Output:
+----------------------------------------------------------
+Warning! Value of'metrictype' is not correctly specified.
+Value of 'metrictype' was defined to 'euclidean'
+tiny
+Warning! Value of 'logpath' tag is missing!
+Value of 'logpath' tag was defined to 'current directory'.
+Warning! Value of 'logfilename' tag is missing.
+Value of 'logfilename' tag was defined to default (original filename +'_log' + original file extension.
+Incorrect path legth
+<end of output>
+Test time =   6.24 sec
+----------------------------------------------------------
+Test Failed.
+"Test7" end time: Nov 21 22:21 +05
+"Test7" time elapsed: 00:00:06
+----------------------------------------------------------
+
+8/12 Testing: Test8
+8/12 Test: Test8
+Command: "/Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/7_test.xml"
+Directory: /Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests
+"Test8" start time: Nov 21 22:21 +05
+Output:
+----------------------------------------------------------
+Warning! Value of'metrictype' is not correctly specified.
+Value of 'metrictype' was defined to 'euclidean'
+tiny
+Warning! Value of 'logpath' tag is missing!
+Value of 'logpath' tag was defined to 'current directory'.
+Warning! Value of 'logfilename' tag is missing.
+Value of 'logfilename' tag was defined to default (original filename +'_log' + original file extension.
+Incorrect path legth
+<end of output>
+Test time =   5.59 sec
+----------------------------------------------------------
+Test Failed.
+"Test8" end time: Nov 21 22:22 +05
+"Test8" time elapsed: 00:00:05
+----------------------------------------------------------
+
+9/12 Testing: Test9
+9/12 Test: Test9
+Command: "/Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/8_test.xml"
+Directory: /Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests
+"Test9" start time: Nov 21 22:22 +05
+Output:
+----------------------------------------------------------
+Warning! Value of'metrictype' is not correctly specified.
+Value of 'metrictype' was defined to 'euclidean'
+tiny
+Warning! Value of 'logpath' tag is missing!
+Value of 'logpath' tag was defined to 'current directory'.
+Warning! Value of 'logfilename' tag is missing.
+Value of 'logfilename' tag was defined to default (original filename +'_log' + original file extension.
+Incorrect path legth
+<end of output>
+Test time =   5.59 sec
+----------------------------------------------------------
+Test Failed.
+"Test9" end time: Nov 21 22:22 +05
+"Test9" time elapsed: 00:00:05
+----------------------------------------------------------
+
+10/12 Testing: Test10
+10/12 Test: Test10
+Command: "/Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/9_test.xml"
+Directory: /Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests
+"Test10" start time: Nov 21 22:22 +05
+Output:
+----------------------------------------------------------
+Warning! Value of'metrictype' is not correctly specified.
+Value of 'metrictype' was defined to 'euclidean'
+tiny
+Warning! Value of 'logpath' tag is missing!
+Value of 'logpath' tag was defined to 'current directory'.
+Warning! Value of 'logfilename' tag is missing.
+Value of 'logfilename' tag was defined to default (original filename +'_log' + original file extension.
+Incorrect path legth
+<end of output>
+Test time =   5.65 sec
+----------------------------------------------------------
+Test Failed.
+"Test10" end time: Nov 21 22:22 +05
+"Test10" time elapsed: 00:00:05
+----------------------------------------------------------
+
+11/12 Testing: Test11
+11/12 Test: Test11
+Command: "/Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/A_test.xml"
+Directory: /Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests
+"Test11" start time: Nov 21 22:22 +05
+Output:
+----------------------------------------------------------
+tiny
+Warning! Value of 'logpath' tag is missing!
+Value of 'logpath' tag was defined to 'current directory'.
+Warning! Value of 'logfilename' tag is missing.
+Value of 'logfilename' tag was defined to default (original filename +'_log' + original file extension.
+Incorrect path legth
+<end of output>
+Test time =   5.57 sec
+----------------------------------------------------------
+Test Failed.
+"Test11" end time: Nov 21 22:22 +05
+"Test11" time elapsed: 00:00:05
+----------------------------------------------------------
+
+12/12 Testing: Test12
+12/12 Test: Test12
+Command: "/Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests/testbench" "../../../TestData/B_test.xml"
+Directory: /Users/alextrenin/Documents/GitHub/PathPlanningProject/Build/Release/Tests
+"Test12" start time: Nov 21 22:22 +05
+Output:
+----------------------------------------------------------
+tiny
+Warning! Value of 'logpath' tag is missing!
+Value of 'logpath' tag was defined to 'current directory'.
+Warning! Value of 'logfilename' tag is missing.
+Value of 'logfilename' tag was defined to default (original filename +'_log' + original file extension.
+Incorrect path legth
+<end of output>
+Test time =   5.71 sec
+----------------------------------------------------------
+Test Failed.
+"Test12" end time: Nov 21 22:22 +05
+"Test12" time elapsed: 00:00:05
+----------------------------------------------------------
+
+End testing: Nov 21 22:22 +05
