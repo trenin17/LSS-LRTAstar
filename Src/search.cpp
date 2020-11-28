@@ -34,7 +34,7 @@ void Search::countHeuristicFunc(Node &v, const Map &map, const EnvironmentOption
 SearchResult Search::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options)
 {
     //need to implement
-    auto starttime = std::chrono::steady_clock::now();
+    //auto starttime = std::chrono::steady_clock::now();
     sresult.pathfound = false;
     
     std::pair<int, int> nstart = map.getStart();
@@ -107,11 +107,11 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
             }
         }
     }
-    auto endtime = std::chrono::steady_clock::now();
+    //auto endtime = std::chrono::steady_clock::now();
     
     sresult.nodescreated =  OPEN.size() + CLOSED.size();
     sresult.numberofsteps = nsteps;
-    sresult.time = std::chrono::duration<double>(duration_cast<std::chrono::milliseconds>(endtime - starttime)).count();
+    //sresult.time = std::chrono::duration<double>(duration_cast<std::chrono::milliseconds>(endtime - starttime)).count();
     if (!sresult.pathfound) {
         return sresult;
     }
