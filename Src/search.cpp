@@ -10,9 +10,9 @@ Search::~Search() {}
 std::list<Node> Search::returnSuccessors(const Node &v, const Map &Map, const EnvironmentOptions &options)
 {
     std::list<Node> succ;
-    std::vector<int> vx = {1, -1, 0, 0};
-    std::vector<int> vy = {0, 0, 1, -1};
-    for (int i = 0; i < 4; i++) {
+    std::vector<int> vx = {1, -1, 0, 0, 1, 1, -1, -1};
+    std::vector<int> vy = {0, 0, 1, -1, 1, -1, 1, -1};
+    for (int i = 0; i < vx.size(); i++) {
         int ni, nj;
         ni = v.i + vx[i];
         nj = v.j + vy[i];
@@ -30,11 +30,23 @@ void Search::countHeuristicFunc(Node &v, const Map &map, const EnvironmentOption
     v.H = di + dj;
     v.F = v.g + v.H;
 }
+double dist (const Node& v, const Node& u, const EnvironmentOptions &options) {
+    switch(options.metrictype) {
+        case CN_SP_MT_DIAG:
+            return sqrt((v.i - u.i)*(v.i - u.i) + (v.j-u.j)*(v.j-u.j));
+            break;
+        case CN_SP_MT_MANH:
+            return abs(v.i-u.i) + abs(v.j-u.j);
+        default:
+            return 1;
+            break;
+    }
+}
 
 SearchResult Search::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options)
 {
     //need to implement
-    //auto starttime = std::chrono::steady_clock::now();
+    auto starttime = std::chrono::steady_clock::now();
     sresult.pathfound = false;
     
     std::pair<int, int> nstart = map.getStart();
@@ -71,7 +83,6 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
         if (s.i == ngoal.first && s.j == ngoal.second) {
             sresult.pathfound = true;
             vvgoal = s;
-//            std::cout << "YEESSSSS  " << vvgoal.parent->i << " " << vvgoal.parent->j << " " << (vvgoal.parent == nullptr) << '\n' ;
             break;
         }
         std::list<Node> succ = returnSuccessors(s, map, options);
@@ -81,7 +92,7 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
                 continue;
             if (gen.find(cur) == gen.end()) {
                 Node ns(cur);
-                ns.g = s.g + 1;
+                ns.g = s.g + dist(ns, s, options);
                 ns.parent = &CLOSED.back();
                 countHeuristicFunc(ns, map, options);
                 OPEN.push_back(ns);
@@ -99,8 +110,9 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
                         nsit = it;
                     }
                 }
-                if (nsit->g > s.g + 1) {
-                    nsit->g = s.g+1;
+                double Dist = dist(s, *nsit, options);
+                if (nsit->g > s.g + Dist) {
+                    nsit->g = s.g+Dist;
                     nsit->parent = &CLOSED.back();
                     countHeuristicFunc(*nsit, map, options);
                 }
@@ -112,15 +124,15 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
     sresult.nodescreated =  OPEN.size() + CLOSED.size();
     sresult.numberofsteps = nsteps;
     //sresult.time = std::chrono::duration<double>(duration_cast<std::chrono::milliseconds>(endtime - starttime)).count();
+    sresult.time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - starttime).count();
     if (!sresult.pathfound) {
         return sresult;
     }
     
     hppath.push_back(vvgoal);
-    int cnt = 0;
 //    std::cout << "YEESSSSS  " << (*(vvgoal.parent)).i << " " << vvgoal.parent->j << " " << '\n' ;
 //    std::cout << "YEESSSSS  " << (*(vvgoal.parent)).i << " " << vvgoal.parent->j << " " << '\n' ;
-    while (vvgoal.parent != nullptr && cnt++ < 1000) {
+    while (vvgoal.parent != nullptr) {
         vvgoal = *(vvgoal.parent);
 //        std::cout << "     " << vvgoal.i << " " << vvgoal.j << " " << vvgoal.pari << " " << vvgoal.parj << '\n';
         hppath.push_back(vvgoal);

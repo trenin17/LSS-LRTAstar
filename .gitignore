@@ -1,0 +1,14 @@
+/bin/Debug/*
+!/bin/Debug/.gitkeep
+
+/bin/Release/*
+!/bin/Release/.gitkeep
+
+/Build/Debug/*
+!/Build/Debug/.gitkeep
+
+/Build/Release/*
+!/Build/Release/.gitkeep
+
+.DS_Store
+
