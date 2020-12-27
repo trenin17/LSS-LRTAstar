@@ -9,6 +9,7 @@
 #include <limits>
 #include <chrono>
 #include <set>
+#include <unordered_map>
 
 class Search
 {
@@ -34,7 +35,13 @@ class Search
         //so think of the data structures that needed to be used, about the wrap-up classes (if needed)
         //Start with very simple (and ineffective) structures like list or vector and make it work first
         //and only then begin enhancement!
-    std::list<Node> OPEN, CLOSED;
+    std::list<Node> OPEN;
+    struct hasher {
+        size_t operator () (const std::pair<int, int>& p) const {
+            return 1ll * INT32_MAX * p.first + p.second;
+        }
+    };
+    std::unordered_map<std::pair<int, int>, Node, hasher> CLOSED;
 //    std::list<Node> successors(const Node *v, const Map &Map) {
 //
 //    }
