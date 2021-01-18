@@ -60,9 +60,25 @@ void Search::countHeuristicFunc(Node &v, const Map &map, const EnvironmentOption
 {
     if (options.metrictype == CN_SP_MT_CHEB) return;
     std::pair<int, int> goal(map.getGoal());
-    int di = goal.first - v.i;
-    int dj = goal.second - v.j;
-    v.H = di + dj;
+    int di = abs(goal.first - v.i);
+    int dj = abs(goal.second - v.j);
+    switch(options.metrictype) {
+        case CN_SP_MT_EUCL:
+            v.H = sqrt(di*di + dj*dj);
+            break;
+        case CN_SP_MT_MANH:
+            v.H = di + dj;
+            break;
+        case CN_SP_MT_DIAG:
+            v.H = abs(di-dj) + CN_SQRT_TWO * std::min(di, dj);
+            break;
+        case CN_SP_MT_CHEB:
+            v.H = std::max(di, dj);
+            break;
+        default:
+            v.H = 0;
+            break;
+    }
     v.F = v.g + v.H;
 }
 
@@ -90,7 +106,7 @@ double dist (const Node& v, const Node& u, const EnvironmentOptions &options) {
 SearchResult Search::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options)
 {
     //need to implement
-    auto starttime = std::chrono::steady_clock::now();
+    auto starttime = std::chrono::high_resolution_clock::now();
     sresult.pathfound = false;
     
     std::pair<int, int> nstart = map.getStart();
@@ -162,8 +178,8 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
     
     sresult.nodescreated =  OPEN.size() + CLOSED.size();
     sresult.numberofsteps = nsteps;
-    //sresult.time = std::chrono::duration<double>(duration_cast<std::chrono::milliseconds>(endtime - starttime)).count();
-    sresult.time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - starttime).count();
+    std::chrono::duration<double> duration = std::chrono::high_resolution_clock::now() - starttime;
+    sresult.time = duration.count();
     if (!sresult.pathfound) {
         return sresult;
     }
