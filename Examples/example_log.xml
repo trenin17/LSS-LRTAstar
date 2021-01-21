@@ -52,7 +52,7 @@
     </options>
     <log>
         <mapfilename>../../Examples/example.xml</mapfilename>
-        <summary numberofsteps="51" nodescreated="86" length="16.071068" length_scaled="385.70562744140625" time="0.000161"/>
+        <summary numberofsteps="372" nodescreated="392" length="16.071068" length_scaled="385.70562744140625" time="0.001299"/>
         <path>
             <row number="0">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row>
             <row number="1">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row>

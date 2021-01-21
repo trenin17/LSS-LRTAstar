@@ -58,7 +58,10 @@ std::list<Node> Search::returnSuccessors(const Node &v, const Map &Map, const En
 
 void Search::countHeuristicFunc(Node &v, const Map &map, const EnvironmentOptions &options)
 {
-    if (options.metrictype == CN_SP_MT_CHEB) return;
+    if (v.H != 0) {
+        v.F = v.g + v.H;
+        return;
+    }
     std::pair<int, int> goal(map.getGoal());
     int di = abs(goal.first - v.i);
     int dj = abs(goal.second - v.j);
