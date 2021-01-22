@@ -58,6 +58,12 @@ std::list<Node> Search::returnSuccessors(const Node &v, const Map &Map, const En
 
 void Search::countHeuristicFunc(Node &v, const Map &map, const EnvironmentOptions &options)
 {
+    if (options.algorithm == CN_SP_ST_DIJK) {
+        v.H = 0;
+        v.F = v.g;
+        return;
+    }
+    
     if (v.H != 0) {
         v.F = v.g + v.H;
         return;
@@ -82,6 +88,7 @@ void Search::countHeuristicFunc(Node &v, const Map &map, const EnvironmentOption
             v.H = 0;
             break;
     }
+    v.H *= options.hweight;
     v.F = v.g + v.H;
 }
 
@@ -118,7 +125,8 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
     Node start(nstart.first, nstart.second);
     countHeuristicFunc(start, map, options);
     OPEN.clear();
-    OPEN.push_back(start);
+    OPEN.insert({{start.F, start.H}, {start.i, start.j}});
+    OPEN_nodes[{start.i, start.j}] = start;
     CLOSED.clear();
     std::set<std::pair<int, int> > gen;
     gen.insert(nstart);
@@ -131,17 +139,11 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
     
     while (!OPEN.empty()) {
         nsteps++;
-        Node s = OPEN.front();
-        std::list<Node>::iterator sit = OPEN.begin();
-        for (auto it = OPEN.begin(); it != OPEN.end(); it++) {
-            if (it->F < s.F) {
-                s = *it;
-                sit = it;
-            }
-        }
-        //std::cout << "@\n";
-        OPEN.erase(sit);
-        CLOSED[{s.i, s.j}] = s;
+        std::pair<int, int> sp = OPEN.begin()->second;
+        Node s = OPEN_nodes[sp];
+        OPEN.erase(OPEN.begin());
+        OPEN_nodes.erase(sp);
+        CLOSED[sp] = s;
 //        std::cout << s.i << " " << s.j << '\n';
         if (s.i == ngoal.first && s.j == ngoal.second) {
             sresult.pathfound = true;
@@ -158,21 +160,19 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
                 ns.g = s.g + dist(ns, s, options);
                 ns.parent = &(CLOSED.find({s.i, s.j})->second);
                 countHeuristicFunc(ns, map, options);
-                OPEN.push_back(ns);
+                OPEN.insert({{ns.F, ns.H}, {ns.i, ns.j}});
+                OPEN_nodes[{ns.i, ns.j}] = ns;
                 gen.insert(cur);
             } else {
                 if (CLOSED.find(cur) != CLOSED.end()) continue;
-                std::list<Node>::iterator nsit;
-                for (auto it = OPEN.begin(); it != OPEN.end(); it++) {
-                    if (it->i == cur.first && it->j == cur.second) {
-                        nsit = it;
-                    }
-                }
-                double Dist = dist(s, *nsit, options);
-                if (nsit->g > s.g + Dist) {
-                    nsit->g = s.g+Dist;
-                    nsit->parent = &(CLOSED.find({s.i, s.j})->second);
-                    countHeuristicFunc(*nsit, map, options);
+                Node &ns = OPEN_nodes[cur];
+                double Dist = dist(s, ns, options);
+                if (ns.g > s.g + Dist) {
+                    OPEN.erase({{ns.F, ns.H}, cur});
+                    ns.g = s.g+Dist;
+                    ns.parent = &(CLOSED.find({s.i, s.j})->second);
+                    countHeuristicFunc(ns, map, options);
+                    OPEN.insert({{ns.F, ns.H}, cur});
                 }
             }
         }
