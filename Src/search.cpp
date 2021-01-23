@@ -7,9 +7,9 @@ Search::Search()
 
 Search::~Search() {}
 
-std::list<Node> Search::returnSuccessors(const Node &v, const Map &Map, const EnvironmentOptions &options)
+std::list<std::pair<int, int>> Search::returnSuccessors(const Node &v, const Map &Map, const EnvironmentOptions &options)
 {
-    std::list<Node> succ;
+    std::list<std::pair<int,int>> succ;
     std::vector<int> vx = {1, 0, -1, 0};
     std::vector<int> vy = {0, 1, 0, -1};
     for (int i = 0; i < vx.size(); i++) {
@@ -17,7 +17,7 @@ std::list<Node> Search::returnSuccessors(const Node &v, const Map &Map, const En
         ni = v.i + vx[i];
         nj = v.j + vy[i];
         if (Map.CellOnGrid(ni, nj) && Map.CellIsTraversable(ni, nj)) {
-            Node adjv(ni, nj);
+            std::pair<int, int> adjv = {ni, nj};
             succ.push_back(adjv);
         }
     }
@@ -36,19 +36,19 @@ std::list<Node> Search::returnSuccessors(const Node &v, const Map &Map, const En
         bool f1 = Map.CellOnGrid(ai1, aj1) && Map.CellIsObstacle(ai1, aj1);
         bool f2 = Map.CellOnGrid(ai2, aj2) && Map.CellIsObstacle(ai2, aj2);
         if (!f1 && !f2) {
-            Node adjv(ni, nj);
+            std::pair<int, int> adjv = {ni, nj};
             succ.push_back(adjv);
             continue;
         }
         if (f1 && f2) {
             if (options.cutcorners && options.allowsqueeze) {
-                Node adjv(ni, nj);
+                std::pair<int, int> adjv = {ni, nj};
                 succ.push_back(adjv);
             }
             continue;
         }
         if (options.cutcorners) {
-            Node adjv(ni, nj);
+            std::pair<int, int> adjv = {ni, nj};
             succ.push_back(adjv);
         }
     }
@@ -58,19 +58,19 @@ std::list<Node> Search::returnSuccessors(const Node &v, const Map &Map, const En
 
 void Search::countHeuristicFunc(Node &v, const Map &map, const EnvironmentOptions &options)
 {
-    if (options.algorithm == CN_SP_ST_DIJK) {
+    v.F = v.g + v.H;
+    if (options.algorithm != CN_SP_ST_ASTAR) {
         v.H = 0;
         v.F = v.g;
         return;
     }
-    
+//
     if (v.H != 0) {
-        v.F = v.g + v.H;
         return;
     }
     std::pair<int, int> goal(map.getGoal());
-    int di = abs(goal.first - v.i);
-    int dj = abs(goal.second - v.j);
+    double di = abs(goal.first - v.i);
+    double dj = abs(goal.second - v.j);
     switch(options.metrictype) {
         case CN_SP_MT_EUCL:
             v.H = sqrt(di*di + dj*dj);
@@ -150,9 +150,9 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
             vvgoal = s;
             break;
         }
-        std::list<Node> succ = returnSuccessors(s, map, options);
+        std::list<std::pair<int, int>> succ = returnSuccessors(s, map, options);
         for (auto it = succ.begin(); it != succ.end(); it++) {
-            std::pair<int, int> cur = {it->i, it->j};
+            std::pair<int, int> cur = *it;
             if (map.getValue(cur.first, cur.second) != 0)
                 continue;
             if (gen.find(cur) == gen.end()) {

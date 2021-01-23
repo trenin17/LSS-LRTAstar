@@ -18,7 +18,7 @@ class Search
         ~Search(void);
         SearchResult startSearch(ILogger *Logger, const Map &Map, const EnvironmentOptions &options);
         void countHeuristicFunc(Node &v, const Map &map, const EnvironmentOptions &options);
-        std::list<Node> returnSuccessors(const Node &v, const Map &Map, const EnvironmentOptions &options);
+        std::list<std::pair<int,int>> returnSuccessors(const Node &v, const Map &Map, const EnvironmentOptions &options);
 
     protected:
         //CODE HERE
@@ -35,7 +35,7 @@ class Search
         //so think of the data structures that needed to be used, about the wrap-up classes (if needed)
         //Start with very simple (and ineffective) structures like list or vector and make it work first
         //and only then begin enhancement!
-    std::set< std::pair< std::pair<int, int>, std::pair<int, int> > > OPEN;
+    std::set< std::pair< std::pair<double, double>, std::pair<int, int> > > OPEN;
     struct hasher {
         size_t operator () (const std::pair<int, int>& p) const {
             return 1ll * INT32_MAX * p.first + p.second;
