@@ -3,6 +3,7 @@
 
 #define CN_PI_CONSTANT 3.14159265359
 #define CN_SQRT_TWO    1.41421356237
+#define CN_INF         1000000000
 
 //XML tags
 #define CNS_TAG_ROOT "root"
@@ -130,6 +131,7 @@
 //Grid Cell
     #define CN_GC_NOOBS 0
     #define CN_GC_OBS   1
+    #define CN_GC_OBOBS 2
 
 //Other
     #define CNS_OTHER_PATHSELECTION     "*"

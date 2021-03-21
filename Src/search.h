@@ -17,9 +17,14 @@ class Search
         Search();
         ~Search(void);
         SearchResult startSearch(ILogger *Logger, const Map &Map, const EnvironmentOptions &options);
-        void countHeuristicFunc(Node &v, const Map &map, const EnvironmentOptions &options);
-        std::list<std::pair<int,int>> returnSuccessors(const Node &v, const Map &Map, const EnvironmentOptions &options);
-
+        void countHeuristicFunc(Node *v, const Map &map, const EnvironmentOptions &options);
+        std::list<std::pair<int,int>> returnSuccessors(const Node *v, const Map &Map, const EnvironmentOptions &options);
+        void OPEN_insert(const Node* v, bool is_new);
+        void Astar(const Map &map, const EnvironmentOptions &options, int lookahead, Node* st);
+        void OPEN_erase(const Node* v, bool perm);
+        void OPEN_clear();
+        void updateHeuristic(const Map &map, const EnvironmentOptions &options);
+    
     protected:
         //CODE HERE
 
@@ -36,13 +41,17 @@ class Search
         //Start with very simple (and ineffective) structures like list or vector and make it work first
         //and only then begin enhancement!
     std::set< std::pair< std::pair<double, double>, std::pair<int, int> > > OPEN;
+    std::set<std::pair<int, std::pair<int, int>>> OPEN_H;
     struct hasher {
         size_t operator () (const std::pair<int, int>& p) const {
             return 1ll * INT32_MAX * p.first + p.second;
         }
     };
-    std::unordered_map<std::pair<int, int>, Node, hasher> OPEN_nodes;
-    std::unordered_map<std::pair<int, int>, Node, hasher> CLOSED;
+    std::unordered_map<std::pair<int, int>, Node*, hasher> OPEN_nodes;
+    std::unordered_map<std::pair<int, int>, Node*, hasher> CLOSED;
+    std::unordered_map<std::pair<int, int>, Node, hasher> gen;
+    Node *start;
+    Node *goal;
 //    std::list<Node> successors(const Node *v, const Map &Map) {
 //
 //    }

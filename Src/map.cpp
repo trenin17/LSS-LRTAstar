@@ -32,6 +32,16 @@ bool Map::CellIsObstacle(int i, int j) const
     return (Grid[i][j] != CN_GC_NOOBS);
 }
 
+bool Map::CellIsObservedObstacle(int i, int j) const
+{
+    return (Grid[i][j] == CN_GC_OBOBS);
+}
+
+bool Map::CellIsPresumablyTraversable(int i, int j) const
+{
+    return (Grid[i][j] != CN_GC_OBOBS);
+}
+
 bool Map::CellOnGrid(int i, int j) const
 {
     return (i < height && i >= 0 && j < width && j >= 0);
@@ -322,6 +332,11 @@ int Map::getValue(int i, int j) const
         return -1;
 
     return Grid[i][j];
+}
+
+void Map::setValue(int i, int j, int v) const {
+    if (CellOnGrid(i, j))
+        Grid[i][j] = v;
 }
 
 int Map::getMapHeight() const

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <map>
+        <width>6</width>
+        <height>6</height>
+        <cellsize>24</cellsize>
+        <startx>2</startx>
+        <starty>0</starty>
+        <finishx>5</finishx>
+        <finishy>0</finishy>
+        <grid>
+            <row>0 0 0 0 1 0 </row>
+            <row>0 0 1 1 1 0 </row>
+            <row>0 0 0 0 1 0 </row>
+            <row>0 0 0 0 0 0 </row>
+            <row>0 0 0 0 0 0 </row>
+            <row>0 0 0 0 0 0 </row>
+
+
+        </grid>
+    </map>
+    <algorithm>
+        <searchtype>astar</searchtype>
+        <metrictype>diagonal</metrictype>
+        <breakingties>g-max</breakingties>
+        <hweight>1</hweight>
+        <allowdiagonal>false</allowdiagonal>
+        <cutcorners>false</cutcorners>
+        <allowsqueeze>false</allowsqueeze>
+    </algorithm>
+    <options>
+        <loglevel>1</loglevel>
+        <logpath />
+        <logfilename />
+    </options>
+</root>
