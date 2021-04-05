@@ -57,12 +57,12 @@ bool Config::getConfig(const char *FileName)
         SearchParams[CN_SP_ST] = CN_SP_ST_BFS;
     }
     else if (value == CNS_SP_ST_DIJK) {
-        N = 4;
+        N = 6;
         SearchParams = new double[N];
         SearchParams[CN_SP_ST] = CN_SP_ST_DIJK;
     }
     else if (value == CNS_SP_ST_ASTAR || value == CNS_SP_ST_JP_SEARCH || value == CNS_SP_ST_TH) {
-        N = 7;
+        N = 9;
         SearchParams = new double[N];
         SearchParams[CN_SP_ST] = CN_SP_ST_ASTAR;
         if (value == CNS_SP_ST_JP_SEARCH)
@@ -225,6 +225,46 @@ bool Config::getConfig(const char *FileName)
         }
     }
 
+    element = algorithm->FirstChildElement(CNS_TAG_VI);
+    if (!element) {
+        std::cout << "Warning! No '" << CNS_TAG_VI << "' tag found in algorithm section." << std::endl;
+        std::cout << "Value of '" << CNS_TAG_VI << "' was defined to 1." << std::endl;
+        SearchParams[CN_SP_VI] = 1;
+    }
+    else {
+        stream << element->GetText();
+        stream >> SearchParams[CN_SP_VI];
+        stream.str("");
+        stream.clear();
+
+        if (SearchParams[CN_SP_VI] < 1) {
+            std::cout << "Warning! Value of '" << CNS_TAG_VI << "' tag is not correctly specified. Should be >= 1."
+                      << std::endl;
+            std::cout << "Value of '" << CNS_TAG_VI << "' was defined to 1." << std::endl;
+            SearchParams[CN_SP_VI] = 1;
+        }
+    }
+    
+    element = algorithm->FirstChildElement(CNS_TAG_LA);
+    if (!element) {
+        std::cout << "Warning! No '" << CNS_TAG_LA << "' tag found in algorithm section." << std::endl;
+        std::cout << "Value of '" << CNS_TAG_LA << "' was defined to 1." << std::endl;
+        SearchParams[CN_SP_LA] = 1;
+    }
+    else {
+        stream << element->GetText();
+        stream >> SearchParams[CN_SP_LA];
+        stream.str("");
+        stream.clear();
+
+        if (SearchParams[CN_SP_LA] < 1) {
+            std::cout << "Warning! Value of '" << CNS_TAG_LA << "' tag is not correctly specified. Should be >= 1."
+                      << std::endl;
+            std::cout << "Value of '" << CNS_TAG_LA << "' was defined to 1." << std::endl;
+            SearchParams[CN_SP_LA] = 1;
+        }
+    }
+    
     options = root->FirstChildElement(CNS_TAG_OPT);
     LogParams = new std::string[3];
     LogParams[CN_LP_PATH] = "";

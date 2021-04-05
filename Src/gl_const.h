@@ -27,6 +27,8 @@
         #define CNS_TAG_AS          "allowsqueeze"
         #define CNS_TAG_AD          "allowdiagonal"
         #define CNS_TAG_CC          "cutcorners"
+        #define CNS_TAG_VI          "visibility"
+        #define CNS_TAG_LA          "lookahead"
 
     #define CNS_TAG_OPT             "options"
         #define CNS_TAG_LOGLVL      "loglevel"
@@ -98,16 +100,19 @@
         #define CN_SP_MT_EUCL   2
         #define CN_SP_MT_CHEB   3
 
-    #define CN_SP_HW 5 //HeuristicWeight
+    #define CN_SP_VI 5 // Visibility
 
-    #define CN_SP_BT 6 //BreakingTies
+    #define CN_SP_LA 6 // Lookahead
+
+    #define CN_SP_HW 7 //HeuristicWeight
+
+    #define CN_SP_BT 8 //BreakingTies
 
         #define CNS_SP_BT_GMIN "g-min"
         #define CNS_SP_BT_GMAX "g-max"
 
         #define CN_SP_BT_GMIN 0
         #define CN_SP_BT_GMAX 1
-
 
 
     //Log Configuration

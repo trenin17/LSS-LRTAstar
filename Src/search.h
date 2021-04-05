@@ -20,7 +20,7 @@ class Search
         void countHeuristicFunc(Node *v, const Map &map, const EnvironmentOptions &options);
         std::list<std::pair<int,int>> returnSuccessors(const Node *v, const Map &Map, const EnvironmentOptions &options);
         void OPEN_insert(const Node* v, bool is_new);
-        void Astar(const Map &map, const EnvironmentOptions &options, int lookahead, Node* st);
+        void Astar(const Map &map, const EnvironmentOptions &options, Node* st);
         void OPEN_erase(const Node* v, bool perm);
         void OPEN_clear();
         void updateHeuristic(const Map &map, const EnvironmentOptions &options);

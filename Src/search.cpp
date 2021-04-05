@@ -144,24 +144,24 @@ bool isReachable(int i, int j, int i0, int j0, const Map &map, const Environment
 }
 
 void observe(Node *v, const Map &map, const EnvironmentOptions &options) {
+    int area = options.visibility;
     int x = v->i, y = v->j;
-    std::vector<int> vx = {1, 0, -1, 0};
-    std::vector<int> vy = {0, 1, 0, -1};
+    std::vector<int> vx, vy;
+    for (int i = -area; i <= area; i++) {
+        for (int j = -area; j <= area; j++) {
+            vx.push_back(i);
+            vy.push_back(j);
+        }
+    }
     for (int i = 0; i < vx.size(); i++) {
         int nx = x + vx[i], ny = y + vy[i];
         if (map.CellOnGrid(nx, ny) && map.CellIsObstacle(nx, ny)) map.setValue(nx, ny, 2);
     }
-    if (!options.allowdiagonal) return;
-    std::vector<int> vdx = {1, -1, -1, 1};
-    std::vector<int> vdy = {1, 1, -1, -1};
-    for (int i = 0; i < vdx.size(); i++) {
-        int nx = x + vdx[i], ny = y + vdy[i];
-        if (map.CellOnGrid(nx, ny) && map.CellIsObstacle(nx, ny)) map.setValue(nx, ny, 2);
-    }
 }
 
-void Search::Astar(const Map &map, const EnvironmentOptions &options, int lookahead, Node* st)
+void Search::Astar(const Map &map, const EnvironmentOptions &options, Node* st)
 {
+    int lookahead = options.lookahead;
     sresult.pathfound = false;
     OPEN_clear();
     CLOSED.clear();
@@ -251,6 +251,7 @@ void Search::updateHeuristic(const Map &map, const EnvironmentOptions &options) 
 
 SearchResult Search::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options)
 {
+    //std::cout << "Visibility: " << options.visibility << "\nLookahead: " << options.lookahead << '\n';
     auto starttime = std::chrono::high_resolution_clock::now();
     sresult.pathfound = false;
     
@@ -271,7 +272,7 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
     
     while (st != goal) {
 //        std::cout << "start " << st->i << " " << st->j << " " << map.getValue(0, 4) << '\n';
-        Astar(map, options, 30, st);
+        Astar(map, options, st);
         if (OPEN.empty()) break;
         
         Node *tgoal;

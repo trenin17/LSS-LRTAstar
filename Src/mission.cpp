@@ -46,6 +46,8 @@ void Mission::createEnvironmentOptions()
     if (options.algorithm == CN_SP_ST_ASTAR) {
         options.hweight = config.SearchParams[CN_SP_HW];
     }
+    options.visibility = config.SearchParams[CN_SP_VI];
+    options.lookahead = config.SearchParams[CN_SP_LA];
 }
 
 void Mission::createSearch()

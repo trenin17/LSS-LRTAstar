@@ -8,10 +8,12 @@ EnvironmentOptions::EnvironmentOptions()
     cutcorners = false;
     algorithm = CN_SP_ST_ASTAR;
     hweight = 1;
+    visibility = 1;
+    lookahead = 1;
 
 }
 
-EnvironmentOptions::EnvironmentOptions(bool AS, bool AD, bool CC, int MT, int AL, double HW)
+EnvironmentOptions::EnvironmentOptions(bool AS, bool AD, bool CC, int MT, int AL, double HW, int VI, int LA)
 {
     metrictype = MT;
     allowsqueeze = AS;
@@ -19,5 +21,7 @@ EnvironmentOptions::EnvironmentOptions(bool AS, bool AD, bool CC, int MT, int AL
     cutcorners = CC;
     algorithm = AL;
     hweight = HW;
+    visibility = VI;
+    lookahead = LA;
 }
 
