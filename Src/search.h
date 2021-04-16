@@ -10,13 +10,14 @@
 #include <chrono>
 #include <set>
 #include <unordered_map>
+#include <fstream>
 
 class Search
 {
     public:
         Search();
         ~Search(void);
-        SearchResult startSearch(ILogger *Logger, const Map &Map, const EnvironmentOptions &options);
+        SearchResult startSearch(ILogger *Logger, const Map &Map, const EnvironmentOptions &options, const char* fileName);
         void countHeuristicFunc(Node *v, const Map &map, const EnvironmentOptions &options);
         std::list<std::pair<int,int>> returnSuccessors(const Node *v, const Map &Map, const EnvironmentOptions &options);
         void OPEN_insert(const Node* v, bool is_new);

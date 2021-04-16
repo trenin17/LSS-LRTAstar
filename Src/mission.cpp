@@ -42,10 +42,6 @@ void Mission::createEnvironmentOptions()
     options.allowsqueeze = config.SearchParams[CN_SP_AS];
     options.allowdiagonal = config.SearchParams[CN_SP_AD];
     options.metrictype = config.SearchParams[CN_SP_MT];
-    options.algorithm = config.SearchParams[CN_SP_ST];
-    if (options.algorithm == CN_SP_ST_ASTAR) {
-        options.hweight = config.SearchParams[CN_SP_HW];
-    }
     options.visibility = config.SearchParams[CN_SP_VI];
     options.lookahead = config.SearchParams[CN_SP_LA];
 }
@@ -57,7 +53,7 @@ void Mission::createSearch()
 
 void Mission::startSearch()
 {
-    sr = search.startSearch(logger, map, options);
+    sr = search.startSearch(logger, map, options, fileName);
 }
 
 void Mission::printSearchResultsToConsole()

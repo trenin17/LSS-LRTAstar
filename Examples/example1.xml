@@ -20,13 +20,13 @@
         </grid>
     </map>
     <algorithm>
-        <searchtype>astar</searchtype>
         <metrictype>diagonal</metrictype>
         <breakingties>g-max</breakingties>
-        <hweight>1</hweight>
         <allowdiagonal>false</allowdiagonal>
         <cutcorners>false</cutcorners>
         <allowsqueeze>false</allowsqueeze>
+        <visibility>1</visibility>
+        <lookahead>3</lookahead>
     </algorithm>
     <options>
         <loglevel>1</loglevel>

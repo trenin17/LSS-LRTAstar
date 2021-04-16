@@ -68,27 +68,14 @@
 
 
 //Search Parameters
-    #define CN_SP_ST 0
 
-        #define CNS_SP_ST_BFS           "bfs"
-        #define CNS_SP_ST_DIJK          "dijkstra"
-        #define CNS_SP_ST_ASTAR         "astar"
-        #define CNS_SP_ST_JP_SEARCH     "jp_search"
-        #define CNS_SP_ST_TH            "theta"
+    #define CN_SP_AD 0 //AllowDiagonal
 
-        #define CN_SP_ST_BFS            0
-        #define CN_SP_ST_DIJK           1
-        #define CN_SP_ST_ASTAR          2
-        #define CN_SP_ST_JP_SEARCH      3
-        #define CN_SP_ST_TH             4
+    #define CN_SP_CC 1 //CutCorners
 
-    #define CN_SP_AD 1 //AllowDiagonal
+    #define CN_SP_AS 2 //AllowSqueeze
 
-    #define CN_SP_CC 2 //CutCorners
-
-    #define CN_SP_AS 3 //AllowSqueeze
-
-    #define CN_SP_MT 4 //MetricType
+    #define CN_SP_MT 3 //MetricType
 
         #define CNS_SP_MT_DIAG  "diagonal"
         #define CNS_SP_MT_MANH  "manhattan"
@@ -100,13 +87,11 @@
         #define CN_SP_MT_EUCL   2
         #define CN_SP_MT_CHEB   3
 
-    #define CN_SP_VI 5 // Visibility
+    #define CN_SP_VI 4 //Visibility
 
-    #define CN_SP_LA 6 // Lookahead
+    #define CN_SP_LA 5 //Lookahead
 
-    #define CN_SP_HW 7 //HeuristicWeight
-
-    #define CN_SP_BT 8 //BreakingTies
+    #define CN_SP_BT 6 //BreakingTies
 
         #define CNS_SP_BT_GMIN "g-min"
         #define CNS_SP_BT_GMAX "g-max"

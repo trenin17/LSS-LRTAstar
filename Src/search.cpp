@@ -82,7 +82,6 @@ void Search::countHeuristicFunc(Node *v, const Map &map, const EnvironmentOption
             v->H = 0;
             break;
     }
-    v->H *= options.hweight;
     v->F = v->g + v->H;
 }
 
@@ -249,8 +248,40 @@ void Search::updateHeuristic(const Map &map, const EnvironmentOptions &options) 
     
 }
 
-SearchResult Search::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options)
+std::string to_logv_file (const char* fname) {
+    std::string str;
+    str.append(fname);
+    size_t found = str.find_last_of(".");
+    if (found != std::string::npos) {
+        str.erase(found);
+        str.insert(found, "_vlog.txt");
+    }
+    else
+        str.append("_vlog.txt");
+    return str;
+}
+
+void vlog_map(const Map &map, const EnvironmentOptions& options, std::ofstream &vfile) {
+    int n = map.getMapHeight(), m = map.getMapWidth();
+    int vis = options.visibility;
+    auto start = map.getStart();
+    auto goal = map.getGoal();
+    vfile << n << " " << m << std::endl << vis << std::endl << start.first << " " << start.second << std::endl << goal.first << " " << goal.second << std::endl;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            int v = map.getValue(i, j);
+            vfile << v << " ";
+        }
+        vfile << std::endl;
+    }
+}
+
+SearchResult Search::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options, const char* fileName)
 {
+    std::string vfileName = to_logv_file(fileName);
+    std::ofstream vfile;
+    vfile.open(vfileName);
+    vlog_map(map, options, vfile);
     //std::cout << "Visibility: " << options.visibility << "\nLookahead: " << options.lookahead << '\n';
     auto starttime = std::chrono::high_resolution_clock::now();
     sresult.pathfound = false;
@@ -287,18 +318,23 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
             tgoal = tgoal->parent;
         }
         std::reverse(tpath.begin(), tpath.end());
+        vfile << tpath.size() << std::endl;
         countHeuristicFunc(st, map, options);
         for (Node *vcur : tpath) {
+            vfile << vcur->i << " " << vcur->j << std::endl;
             countHeuristicFunc(vcur, map, options);
 //            std::cout << vcur->i << " " << vcur->j << " " << vcur->F <<  '\n';
         }
+        int len = 0;
         for (Node *vcur : tpath) {
 //            std::cout << vcur->i << " " << vcur->j << "     " << isReachable(vcur->i, vcur->j, st->i, st->j, map, options) << '\n';
             if (!isReachable(vcur->i, vcur->j, st->i, st->j, map, options) || vcur->F > st->F) break;
+            len++;
             st = vcur;
             lppath.push_back(*st);
             observe(st, map, options);
         }
+        vfile << len << std::endl;
     }
     
 //    std::cout << "#### " << (st == goal) << '\n';

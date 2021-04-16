@@ -37,10 +37,8 @@
         </grid>
     </map>
     <algorithm>
-        <searchtype>astar</searchtype>
         <metrictype>diagonal</metrictype>
         <breakingties>g-max</breakingties>
-        <hweight>1</hweight>
         <allowdiagonal>true</allowdiagonal>
         <cutcorners>true</cutcorners>
         <allowsqueeze>true</allowsqueeze>
