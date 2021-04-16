@@ -23,20 +23,17 @@
 
 ## Инструкции запуска
 Скрипты для запуска находятся в папке Scripts.
-Находясь в папке Scripts, собрать и запустить Release-версию проекта на готовом примере, лежащем в Examples, можно так:
+Находясь в папке Scripts, собрать Release-версию проекта можно так:
 ```bash
 ./BuildRelease
-./RunRelease
 ```
 А Debug-версию так:
 ```bash
 ./BuildDebug
-./RunDebug
 ```
-Запустить на другом тесте можно так:
+Запустить на тесте с именем YourTest.xml можно так:
 ```cmd
-cd ../../Bin/{Debug|Release}/
-PathPlanning.exe YourTest.xml
+./Run{Release|Debug} YourTest.xml
 ```
 
 ## Формат входного файла

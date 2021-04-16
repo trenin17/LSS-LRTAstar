@@ -33,7 +33,7 @@
     </options>
     <log>
         <mapfilename>../../Examples/example1.xml</mapfilename>
-        <summary numberofsteps="20" nodescreated="23" length="13" length_scaled="312" time="0.000472"/>
+        <summary numberofsteps="20" nodescreated="23" length="13" length_scaled="312" time="0.000275"/>
         <path>
             <row number="0">0 * * * 2 * </row>
             <row number="1">0 * 2 2 2 * </row>
