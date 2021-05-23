@@ -43,7 +43,7 @@
         <cutcorners>true</cutcorners>
         <allowsqueeze>true</allowsqueeze>
         <visibility>10</visibility>
-        <lookahead>30</lookahead>
+        <lookahead>8</lookahead>
     </algorithm>
     <options>
         <loglevel>1</loglevel>

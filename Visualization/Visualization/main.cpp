@@ -15,9 +15,12 @@
 //
 
 #include <iostream>
+#include <stdio.h>
 #include <fstream>
 #include <vector>
 #include <map>
+#include <set>
+#include <unordered_map>
 #include <SFML/Graphics.hpp>
 
 // Here is a small helper for you! Have a look.
@@ -86,9 +89,27 @@ void drawLine(sf::RenderWindow &window, float h1, float w1, float h2, float w2) 
     window.draw(line_without_thickness, 2, sf::Lines);
 }
 
+void drawText(sf::RenderWindow &window, double x, float size, float shH, float shW, sf::Font font, sf::Color color = sf::Color::Black) {
+    char buf[64];
+    snprintf(buf, 64, "%.2lf", x);
+    sf::Text text(buf, font, 50);
+    text.setFillColor(color);
+    text.setCharacterSize(size);
+    text.move(shW, shH);
+    window.draw(text);
+}
+
 std::map<std::pair<int, int>, float> angle = { {{1, 0}, 90}, {{0, 1}, 0}, {{-1, 0}, 270}, {{0, -1}, 180}, {{1, 1}, 45}, {{-1, 1}, 315}, {{-1, -1}, 225}, {{1, -1}, 135} };
 
-void drawMap(sf::RenderWindow &window, std::vector<std::vector<int>> &map, int cur_H, int cur_W, int area, int visibility, float cell_H, float cell_W, std::vector<std::vector<std::pair<int, int>>> &path_line) {
+struct hasher {
+    size_t operator () (const std::pair<int, int>& p) const {
+        return 1ll * INT32_MAX * p.first + p.second;
+    }
+};
+std::unordered_map<std::pair<int, int>, double, hasher> nodes_heur;
+sf::Font font;
+
+void drawMap(sf::RenderWindow &window, std::vector<std::vector<int>> &map, int cur_H, int cur_W, int area, int visibility, float cell_H, float cell_W, std::vector<std::vector<std::pair<int, int>>> &path_line, std::set<std::pair<int, int>> &borders) {
     int lh = cur_H - area/2, rh = cur_H + area/2;
     int lw = cur_W - area/2, rw = cur_W + area/2;
     int lvh = cur_H - visibility/2, rvh = cur_H + visibility/2;
@@ -101,13 +122,11 @@ void drawMap(sf::RenderWindow &window, std::vector<std::vector<int>> &map, int c
                 map[i][j] = -2;
                 x = -2;
             }
-            if (x == -1) {
-                drawRectangle(window, cell_H, cell_W, sf::Color(0, 0, 0, 30), cwh, cww);
-            }
-            if (x == -2 || x == -3) {
-                drawRectangle(window, cell_H, cell_W, sf::Color::Black, cwh, cww);
-            }
+            
             if (x != -3) {
+                if (borders.find({i, j}) != borders.end()) {
+                    drawRectangle(window, cell_H, cell_W, sf::Color(255,0,0,150), cwh, cww);
+                }
                 if (path_line[i][j] != std::make_pair(0, 0)) {
 //                    std::cout << "#";
                     int dh = path_line[i][j].first, dw = path_line[i][j].second;
@@ -115,6 +134,16 @@ void drawMap(sf::RenderWindow &window, std::vector<std::vector<int>> &map, int c
 //                    drawLine(window, cwh + cell_H / 2, cww + cell_W / 2, cwh2 + cell_H / 2, cww2 + cell_W / 2);
                     drawRectangle(window, sqrt(dh*dh+dw*dw) * cell_H + 2, 4, sf::Color::Black, cwh + cell_H/2, cww + cell_W/2, angle[{dh, dw}]);
                 }
+                if (nodes_heur.find({i, j}) != nodes_heur.end()) {
+                    double x = nodes_heur[{i, j}];
+                    drawText(window, x, cell_H/5, cwh, cww + cell_W/10, font);
+                }
+            }
+            if (x == -1) {
+                drawRectangle(window, cell_H, cell_W, sf::Color(0, 0, 0, 50), cwh, cww);
+            }
+            if (x == -2 || x == -3) {
+                drawRectangle(window, cell_H, cell_W, sf::Color::Black, cwh, cww);
             }
         }
     }
@@ -129,6 +158,7 @@ int main(int argc, char *argv[])
     file >> map_H >> map_W >> visibility >> start_H >> start_W >> goal_H >> goal_W;
     std::vector<std::vector<int>> map(map_H, std::vector<int>(map_W));
     std::vector<std::vector<std::pair<int, int>>> path_line(map_H, std::vector<std::pair<int, int>>(map_W));
+    std::set<std::pair<int, int> > borders;
     for (int i = 0; i < map_H; i++) {
         for (int j = 0; j < map_W; j++) {
             file >> map[i][j];
@@ -136,6 +166,9 @@ int main(int argc, char *argv[])
         }
     }
     // Create the main window
+    if (!font.loadFromFile(resourcePath() + "sansation.ttf")) {
+        return EXIT_FAILURE;
+    }
     int window_H = 1800, window_W = 1800;
     visibility = visibility * 2 + 1;
     int area = visibility + 4;
@@ -158,10 +191,7 @@ int main(int argc, char *argv[])
     sf::Sprite sprite(texture);
 
     // Create a graphical text to display
-    sf::Font font;
-    if (!font.loadFromFile(resourcePath() + "sansation.ttf")) {
-        return EXIT_FAILURE;
-    }
+    
     sf::Text text("LSS-LRTA*", font, 50);
     text.setFillColor(sf::Color::Black);*/
 
@@ -196,6 +226,28 @@ int main(int argc, char *argv[])
                 if (path_len == cur_pos) {
                     for (int i = cur_pos; i < pathfound_len; i++) {
                         path_line[path[i].first][path[i].second] = {0, 0};
+                    }
+                    int num_borders;
+                    if (!(file >> num_borders)) {
+                        eof = 1;
+                    } else {
+                        borders.clear();
+                        for (int i = 0; i < num_borders; i++) {
+                            int b_i, b_j;
+                            file >> b_i >> b_j;
+                            borders.insert({b_i, b_j});
+                        }
+                    }
+                    int heur_len;
+                    if (!(file >> heur_len)) {
+                        eof = 1;
+                    } else {
+                        for (int i = 0; i < heur_len; i++) {
+                            int n_i, n_j;
+                            double n_H;
+                            file >> n_i >> n_j >> n_H;
+                            nodes_heur[{n_i, n_j}] = n_H;
+                        }
                     }
                     if (!(file >> pathfound_len)) {
                         eof = 1;
@@ -240,9 +292,9 @@ int main(int argc, char *argv[])
         
         drawRectangle(window, v_H, v_W, sf::Color::Green, (window_H - v_H)/2, (window_W - v_W)/2);
         
-        drawGrid(window, area, area);
+        drawMap(window, map, cur_H, cur_W, area, visibility, cellH, cellW, path_line, borders);
         
-        drawMap(window, map, cur_H, cur_W, area, visibility, cellH, cellW, path_line);
+        drawGrid(window, area, area);
         
         int lh = cur_H - area/2, rh = cur_H + area/2;
         int lw = cur_W - area/2, rw = cur_W + area/2;
@@ -253,6 +305,7 @@ int main(int argc, char *argv[])
         
         drawCircle(window, std::min(cellH, cellW) / 4, sf::Color::Black, (window_H - 0.5 * cellH) / 2, (window_W - 0.5 * cellW) / 2);
         
+        //drawText(window, 10.25, 30, 30, 20, font);
         
 //        drawRectangle(window, 100, 4, sf::Color::Black, 400, 400, angle[{1, -1}]);
         

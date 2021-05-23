@@ -83,6 +83,9 @@ void Search::countHeuristicFunc(Node *v, const Map &map, const EnvironmentOption
             break;
     }
     v->F = v->g + v->H;
+    if (di == 0 && dj == 0) {
+//        std::cout << "###### " << v->F << " " << v->H << " " << v->g << std::endl;
+    }
 }
 
 double dist (const Node* v, const Node* u, const EnvironmentOptions &options) {
@@ -164,21 +167,24 @@ void Search::Astar(const Map &map, const EnvironmentOptions &options, Node* st)
     sresult.pathfound = false;
     OPEN_clear();
     CLOSED.clear();
+    std::unordered_set<Node *> used;
     st->g = 0;
+    used.insert(st);
     countHeuristicFunc(st, map, options);
+    h_v.push_back({{st->i, st->j}, st->H});
     OPEN_insert(st, 1);
     int expansions = 0;
     while (!OPEN.empty() && expansions++ < lookahead) {
         sresult.numberofsteps++;
         std::pair<int, int> sp = OPEN.begin()->second;
         Node *s = OPEN_nodes[sp];
-        OPEN_erase(s, 1);
-        CLOSED[sp] = s;
+//        std::cout << "i " << s->i << " j " << s->j << " F " << s->F << " g " << s->g << " H " << s->H << std::endl;
         if (s->i == goal->i && s->j == goal->j) {
             sresult.pathfound = true;
-            goal = s;
             break;
         }
+        OPEN_erase(s, 1);
+        CLOSED[sp] = s;
         std::list<std::pair<int, int>> succ = returnSuccessors(s, map, options);
         for (auto it = succ.begin(); it != succ.end(); it++) {
             std::pair<int, int> cur = *it;
@@ -191,16 +197,18 @@ void Search::Astar(const Map &map, const EnvironmentOptions &options, Node* st)
                 ns->g = s->g + dist(ns, s, options);
                 ns->parent = s;
                 countHeuristicFunc(ns, map, options);
+                h_v.push_back({{ns->i, ns->j}, ns->H});
                 OPEN_insert(ns, 1);
             } else {
                 if (CLOSED.find(cur) != CLOSED.end()) continue;
                 if (OPEN_nodes.find(cur) != OPEN_nodes.end()) {
                     Node *ns = OPEN_nodes[cur];
                     double Dist = dist(s, ns, options);
-                    if (ns->g > s->g + Dist) {
+                    if (ns->g > s->g + Dist || used.find(ns) == used.end()) {
                         OPEN_erase(ns, 0);
                         ns->g = s->g+Dist;
                         ns->parent = s;
+                        used.insert(ns);
                         countHeuristicFunc(ns, map, options);
                         OPEN_insert(ns, 0);
                     }
@@ -214,11 +222,14 @@ void Search::Astar(const Map &map, const EnvironmentOptions &options, Node* st)
             }
         }
     }
+//    std::cout << "------------\n";
 }
 
 void Search::updateHeuristic(const Map &map, const EnvironmentOptions &options) {
+    std::vector<std::pair<int, int> > CLOSED_p;
     for (auto &p : CLOSED) {
         p.second->H = CN_INF;
+        CLOSED_p.push_back({p.second->i, p.second->j});
     }
     while (!CLOSED.empty()) {
         Node* s = OPEN_nodes[OPEN_H.begin()->second];
@@ -235,17 +246,21 @@ void Search::updateHeuristic(const Map &map, const EnvironmentOptions &options) 
                 if (ns->H > s->H + Dist) {
                     if (OPEN_nodes.find({ns->i, ns->j}) == OPEN_nodes.end()) {
                         ns->H = s->H + Dist;
+                        countHeuristicFunc(ns, map, options);
                         OPEN_insert(ns, 1);
                     } else {
                         OPEN_erase(ns, 0);
                         ns->H = s->H + Dist;
+                        countHeuristicFunc(ns, map, options);
                         OPEN_insert(ns, 0);
                     }
                 }
             }
         }
     }
-    
+    for (auto &p : CLOSED_p) {
+        h_v.push_back({{p.first, p.second}, gen[p].H});
+    }
 }
 
 std::string to_logv_file (const char* fname) {
@@ -297,21 +312,35 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
     observe(start, map, options);
     lppath.push_back(*start);
     
+    h_v.clear();
+    h_v.push_back({{goal->i, goal->j}, goal->H});
     sresult.numberofsteps = 0;
     start->parent = nullptr;
     Node* st = start;
     
     while (st != goal) {
 //        std::cout << "start " << st->i << " " << st->j << " " << map.getValue(0, 4) << '\n';
+        sresult.pathfound = false;
         Astar(map, options, st);
         if (OPEN.empty()) break;
+        
+        vfile << OPEN_nodes.size() << std::endl;
+        for (auto &p : OPEN_nodes) {
+            vfile << p.first.first << " " << p.first.second << std::endl;
+        }
         
         Node *tgoal;
         if (sresult.pathfound) tgoal = goal;
         else
             tgoal = OPEN_nodes[OPEN.begin()->second];
+//        std::cout << "GOAL i " << tgoal->i << " j " << tgoal->j << " F " << tgoal->F << " g " << tgoal->g << " H " << tgoal->H << std::endl;
         if (tgoal == goal) sresult.pathfound = true;
         updateHeuristic(map, options);
+        vfile << h_v.size() << std::endl;
+        for (auto &p : h_v) {
+            vfile << p.first.first << " " << p.first.second << " " << p.second << std::endl;
+        }
+        h_v.clear();
         std::vector<Node*> tpath;
         while (tgoal != st) {
             tpath.push_back(tgoal);
@@ -327,7 +356,7 @@ SearchResult Search::startSearch(ILogger *Logger, const Map &map, const Environm
         }
         int len = 0;
         for (Node *vcur : tpath) {
-//            std::cout << vcur->i << " " << vcur->j << "     " << isReachable(vcur->i, vcur->j, st->i, st->j, map, options) << '\n';
+//            std::cout << vcur->i << " " << vcur->j << "     " << vcur->F << " " << st->F << " " << '\n';
             if (!isReachable(vcur->i, vcur->j, st->i, st->j, map, options) || vcur->F > st->F) break;
             len++;
             st = vcur;

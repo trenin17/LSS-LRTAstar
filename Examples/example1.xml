@@ -26,7 +26,7 @@
         <cutcorners>false</cutcorners>
         <allowsqueeze>false</allowsqueeze>
         <visibility>1</visibility>
-        <lookahead>3</lookahead>
+        <lookahead>6</lookahead>
     </algorithm>
     <options>
         <loglevel>1</loglevel>

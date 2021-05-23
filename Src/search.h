@@ -10,6 +10,7 @@
 #include <chrono>
 #include <set>
 #include <unordered_map>
+#include <unordered_set>
 #include <fstream>
 
 class Search
@@ -51,6 +52,7 @@ class Search
     std::unordered_map<std::pair<int, int>, Node*, hasher> OPEN_nodes;
     std::unordered_map<std::pair<int, int>, Node*, hasher> CLOSED;
     std::unordered_map<std::pair<int, int>, Node, hasher> gen;
+    std::vector<std::pair<std::pair<int, int>, double> > h_v;
     Node *start;
     Node *goal;
 //    std::list<Node> successors(const Node *v, const Map &Map) {
