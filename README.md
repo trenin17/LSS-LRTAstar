@@ -1,79 +1,79 @@
 # PathPlanning
-В этом проекте исследуется и реализуется алгоритм поиска оптимального пути в ограниченно-наблюдаемой среде LSS-LRTA<sup>*</sup>.
+This project observes and implements limited visibility pathfinding algorithm called LSS-LRTA<sup>*</sup>.
 
-Этот алгоритм чередует поиск пути с помощью алгоритма А<sup>*</sup> c обновлением эвристики и перемещением.
+It interleaves А<sup>*</sup> path finding with heuristics updates and action executions.
 
 ![alt-text](visualization.gif)
 
-Черный круг в центре - агент
+Center black circle - agent
 
-Синий круг - финишная клетка
+Blue circle - finish cell
 
-Зеленая область - область видимости агента
+Green area - visibility area
 
-Белые клетки - свободные клетки
+White cell - empty cell
 
-Серые клетки - клетки с препятствием, о которых агенту еще не известно
+Grey cell - cell with an obstacle, that was not yet discovered by the agent
 
-Черные клетки - клетки с препятствием, о которых агенту уже известно
+Black cell - cell with an obstacle, that was discovered by the agent
 
-Черная линия - путь, найденный в процессе работы алгоритма A<sup>*</sup>
+Black line - path found by A<sup>*</sup>
 
-Подробнее про алгоритм: https://link.springer.com/article/10.1007/s10458-008-9061-x
+More about the algorithm: https://link.springer.com/article/10.1007/s10458-008-9061-x
 
-## Инструкции запуска
-Скрипты для запуска находятся в папке Scripts.
-Находясь в папке Scripts, собрать Release-версию проекта можно так:
+## Launch instuctions
+Launch scripts are placed in the `Scripts` folder.
+From `Scripts` you can build Release-version of the project running this command:
 ```bash
 ./BuildRelease
 ```
-А Debug-версию так:
+And Debug-version like this:
 ```bash
 ./BuildDebug
 ```
-Запустить на тесте с именем YourTest.xml можно так:
+To run on a test 'YourTest.xml' do this:
 ```cmd
 ./Run{Release|Debug} YourTest.xml
 ```
 
-## Формат входного файла
-Формат файла XML.
-* Описание карты
-  * width, height - размеры карты
-  * cellsize - размер одной клетки на карте
-  * startx, starty - координаты стартовой точки
-  * finishx, finishy - координаты финишной точки
-  * grid - карта в виде матрицы из 0 и 1, где 0 - свободная клетка, 1 - препятствие.   
-* Описание типа поиска
-  * metrictype - вид метрики
-    * diagonal - диагональное расстояние  
+## Input format
+XML file.
+* Map description
+  * width, height - map size
+  * cellsize - size of a single map cell
+  * startx, starty - start coordinates
+  * finishx, finishy - finish coordinates
+  * grid - map in the form of matrix consisting of 0 and 1, where 0 means an empty cell and 1 means an obstacle.   
+* Search type description
+  * metrictype - type of a metric used to calculate distances.
+    * diagonal  
 
-    * manhatten - манхэттенское расстояние  
+    * manhatten
     
-    * euclidian - евклидово расстояние  
+    * euclidian
 
-    * chebyshev - расстояние Чебышева  
-  * allowdiagonal - если true, то разрешены переходы по диагоналям
-  * cutcorners - если true, то разрешено срезать углы по диагонали
-  * allowsqueeze - если true, то разрешено "протискиваться" через углы рядом стоящих препятствий
-  * visibility - расстояние в клетках карты, на которое агент может видеть карту от текущего местоположения по вертикали или горизонтали
-  * lookahead - количество раскрытий вершин за один запуск алгоритма A<sup>*</sup>
+    * chebyshev
+  * allowdiagonal - if true, agent can move diagonally
+  * cutcorners - if true, agent can cut corners of obstacles
+  * allowsqueeze - if true, agent can squeeze through two obstacles sharing only one cell corner
+  * visibility - distance in cells, tha can be observed by the agent vertically and horizontally.
+  * lookahead - A<sup>*</sup> state expansion limit 
   
-## Формат выходного файла
-* numberofsteps - количество шагов алгоритма
-* nodescreated - количество созданных объектов типа Node
-* length - длина искомого пути в клетках сетки
-* length_scaled - длина полученного пути
-* time - время работы алгоритма
-* path - представление итогового пути на карте
-* lplevel - последовательность клеток, образующих путь
-* hplevel - последовательность отрезков пути.
+## Output format
+* numberofsteps - number of steps performed by the algorithm
+* nodescreated - number of Node-type ojects created
+* length - length of the path found
+* length_scaled - length of the path found considering cell sizes
+* time - run time of the algorithm
+* path - image of the path on the map
+* lplevel - cell sequence, that form the path
+* hplevel - sequence of one-directional segments of the path.
 
 
-Также создается файл "YourFile_vlog.txt", необходимый для визуализации алгоритма.
+During the run time of the algorithm an "YourFile_vlog.txt" file is also created. It serves for visualization.
 
-## Визуализация
+## Visualization
 
-Чтобы запустить визуализацию, надо зайти в папку Visualization/Visualization и запустить код, передав в аргументы командной строки файл вида "YourFile_vlog.txt".
+To run visualization, go to `Visualization/Visualization` folder and run the code, passing file of the form "YourFile_vlog.txt" as command line argument.
 
-Чтобы визуализация заработала, необходимо наличие установленной библиотеки SFML(https://www.sfml-dev.org/)
+To make visualization work, you need to have an SFML library installed(https://www.sfml-dev.org/).
